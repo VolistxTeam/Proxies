@@ -1,0 +1,29 @@
+{
+    "name": "volistx/proxies",
+    "description": "Add Volistx Reverse Proxy IP addresses to trusted proxies for Laravel.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Cryental",
+            "email": "contact@cryental.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.4",
+        "illuminate/support": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Volistx\\Proxies\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Volistx\\Proxies\\TrustedProxyServiceProvider"
+            ]
+        }
+    }
+}
