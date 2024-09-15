@@ -40,6 +40,7 @@ class VolistxProxies
      * Retrieve StackPath proxies list.
      *
      * @return array
+     * @throws GuzzleException
      */
     public function load(): array
     {

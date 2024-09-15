@@ -21,7 +21,7 @@ class TrustedProxyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerPublishing()
+    private function registerPublishing(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -35,13 +35,13 @@ class TrustedProxyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             __DIR__.'/../config/vproxies.php',
             'vproxies'
         );
-        $this->app->singleton(\Cryental\StackPath\Facades\StackPathProxies::class, \Cryental\StackPath\StackPathProxies::class);
+        $this->app->singleton(\Volistx\Proxies\Facades\VolistxProxies::class, \Volistx\Proxies\VolistxProxies::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

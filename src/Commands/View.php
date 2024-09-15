@@ -13,7 +13,7 @@ class View extends Command
      *
      * @var string
      */
-    protected $signature = 'stackpath:view';
+    protected $signature = 'proxies:view';
 
     /**
      * The console command description.

@@ -14,7 +14,7 @@ class Reload extends Command
      *
      * @var string
      */
-    protected $signature = 'stackpath:reload';
+    protected $signature = 'proxies:reload';
 
     /**
      * The console command description.
