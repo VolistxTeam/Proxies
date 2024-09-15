@@ -41,5 +41,12 @@ class TrustedProxyServiceProvider extends ServiceProvider
             __DIR__.'/../config/proxies.php',
             'proxies'
         );
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Commands\Reload::class,
+                Commands\View::class,
+            ]);
+        }
     }
 }
