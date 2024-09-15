@@ -12,7 +12,7 @@ final class LaravelVolistx
      *
      * @var Closure|null
      */
-    protected static ?Closure $getProxiesCallback;
+    protected static ?Closure $getProxiesCallback = null;
 
     /**
      * Get the proxies addresses.

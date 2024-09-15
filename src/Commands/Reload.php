@@ -24,26 +24,18 @@ class Reload extends Command
     protected $description = 'Reload trust proxies IPs and store in cache.';
 
     /**
-     * Create a new command instance.
-     *
-     * @param CacheFactory $cache
-     * @param Repository $config
-     */
-    public function __construct(private CacheFactory $cache, private Repository $config)
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
+     *
+     * @param Factory    $cache
+     * @param Repository $config
      *
      * @return void
      */
-    public function handle()
+    public function handle(CacheFactory $cache, Repository $config)
     {
         $proxies = LaravelVolistx::getProxies();
 
-        $this->cache->store()->forever($this->config->get('vproxies.cache'), $proxies);
+        $cache->store()->forever($config->get('vproxies.cache'), $proxies);
 
         $this->info('Volistx\'s IP blocks have been reloaded.');
     }
