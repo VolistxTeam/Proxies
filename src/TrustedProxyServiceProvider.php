@@ -25,8 +25,8 @@ class TrustedProxyServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/vproxies.php' => config_path('vproxies.php'),
-            ], 'vproxies-config');
+                __DIR__.'/../config/proxies.php' => config_path('proxies.php'),
+            ]);
         }
     }
 
@@ -38,16 +38,8 @@ class TrustedProxyServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/vproxies.php',
-            'vproxies'
+            __DIR__.'/../config/proxies.php',
+            'proxies'
         );
-        $this->app->singleton(\Volistx\Proxies\Facades\VolistxProxies::class, \Volistx\Proxies\VolistxProxies::class);
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                Commands\Reload::class,
-                Commands\View::class,
-            ]);
-        }
     }
 }

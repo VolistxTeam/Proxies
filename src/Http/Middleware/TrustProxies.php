@@ -2,32 +2,49 @@
 
 namespace Volistx\Proxies\Http\Middleware;
 
-use Volistx\Proxies\LaravelVolistx;
-use Illuminate\Http\Middleware\TrustProxies as Middleware;
-use Illuminate\Http\Request;
+use Monicahq\Cloudflare\Http\Middleware\TrustProxies as BaseTrustProxies;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 
-class TrustProxies extends Middleware
+class TrustProxies extends BaseTrustProxies
 {
     /**
-     * Sets the trusted proxies on the request to the value of StackPath ips.
+     * Get the trusted proxies.
      *
-     * @param \Illuminate\Http\Request $request
+     * @return array
      */
-    protected function setTrustedProxyIpAddresses(Request $request)
+    protected function proxies(): array
     {
-        $cacheKey = Config::get('vproxies.cache');
-        $cachedProxies = Cache::get($cacheKey, function () use ($cacheKey) {
-            return tap(LaravelVolistx::getProxies(), function ($proxies) use ($cacheKey) {
-                Cache::forever($cacheKey, $proxies);
-            });
+        // Get the proxies from the parent (Cloudflare proxies)
+        $cloudflareProxies = parent::proxies();
+
+        // Get additional proxies from your custom URL
+        $customProxies = $this->getVolistxProxies();
+
+        // Merge and return the combined list of proxies
+        return array_merge($cloudflareProxies, $customProxies);
+    }
+
+    /**
+     * Fetch custom proxies from a URL and cache them.
+     *
+     * @return array
+     */
+    protected function getVolistxProxies(): array
+    {
+        $cacheKey = config('proxies.cache');
+
+        return Cache::remember($cacheKey, 3600, function () {
+            $url = config('proxies.url');
+            $response = Http::get($url);
+
+            if ($response->successful()) {
+                // Assuming each proxy is on a new line
+                return array_filter(explode("\n", $response->body()));
+            }
+
+            // Handle failure (return an empty array or predefined proxies)
+            return [];
         });
-
-        if (is_array($cachedProxies) && count($cachedProxies) > 0) {
-            $this->proxies = array_merge((array) $this->proxies, $cachedProxies);
-        }
-
-        parent::setTrustedProxyIpAddresses($request);
     }
 }
