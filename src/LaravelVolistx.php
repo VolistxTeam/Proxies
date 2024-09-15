@@ -3,7 +3,6 @@
 namespace Volistx\Proxies;
 
 use Closure;
-use Volistx\Proxies\Facades\VolistxProxies;
 
 final class LaravelVolistx
 {
