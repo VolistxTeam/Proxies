@@ -35,5 +35,7 @@ class Reload extends Command
             (new TrustProxiesLoader())->getVolistxProxies(),
             3600
         );
+
+        $this->info('Volistx Proxy\'s IP blocks have been reloaded.');
     }
 }
