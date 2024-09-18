@@ -30,6 +30,8 @@ class Reload extends Command
     public function handle()
     {
         $cacheKey = config('proxies.cache');
+
+        Cache::forget($cacheKey);
         Cache::put(
             $cacheKey,
             (new TrustProxiesLoader())->getVolistxProxies(),
